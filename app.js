@@ -4,6 +4,7 @@ const app=express();
 const bodyParser=require("body-parser");
 app.use(bodyParser.urlencoded({extended:true}));
 
+
 const request=require("request");
 
 const https=require("https");
@@ -13,7 +14,7 @@ app.use(express.static("public"));
 /////////////////////////////////////////////////////////////////////////////////
 
 app.get("/", function(req,res){
-    res.sendFile(__dirname+"/signup.html");
+    res.sendFile(__dirname+"/index.html");
 
 });
 
@@ -49,13 +50,14 @@ app.post("/", function(req,res){
     const url="https://us11.api.mailchimp.com/3.0/lists/c2461e23b4";
     const options={
         method:"POST",
-        auth: "asdf:74bcc94d75207bac9308e4a73cb1c743-us11"
+        auth: "asdf:7a6b9588f8239b637706c688e239384b-us11"
 
     }
 
     const request=https.request(url, options, function(response){
+        console.log(response.statusCode);
 
-        if(response.statusCode == 200)
+        if(response.statusCode === 200 && response.error_count===0)
         {
             res.sendFile(__dirname+"/sucess.html");
         }
@@ -69,7 +71,7 @@ app.post("/", function(req,res){
 
         });
 
-        // request.write(jsondata);
+        request.write(jsondata);
         request.end();
 
 })
